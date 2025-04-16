@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: dispatools
+Version: 0.1
+Summary: Python software package for analysis of NMR phase shifts using DISPA framework
+Author: Lucas C. Wheeler
+Author-email: lwheeler9@gmail.com
+Classifier: Programming Language :: Python
+License-File: LICENSE
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: nmrglue
+Requires-Dist: pandas
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
