@@ -39,10 +39,10 @@ def polar_plot(data, filename, color, frame=True, units="a.u."):
         ax.plot(data[0], data[1], color=color); 
 
         # label axes
-        plt.xlabel("Real (ppm)", fontsize=12)
-        plt.ylabel("Imaginary (ppm)", fontsize=12); 
+        plt.xlabel("Real"+ " " + "(" + units + ")", fontsize=12)
+        plt.ylabel("Imaginary"+ " " + "(" + units + ")", fontsize=12);
         
-         # set aspect to equal for square plot
+        # set aspect to equal for square plot
         plt.gca().set_aspect("equal")
 
         # save figure in png and pdf format
