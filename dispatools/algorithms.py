@@ -24,9 +24,12 @@ def find_saddle(params, data, ppm_region, plot=False, plotname="saddle-plot"):
         name of optional plot
 
     Returns
+    
     -------
+    
     saddle_ppm : float
         The location along the ppm axis of the saddle point
+        
     """
 
     # Calculate the ppm scale for the data
@@ -48,20 +51,43 @@ def find_saddle(params, data, ppm_region, plot=False, plotname="saddle-plot"):
 
     # Plot the location of the saddle point on magnitude spectrum
     if plot==True:
-        fig = plt.figure(constrained_layout=True, figsize=(4,3))
-        ax = fig.add_subplot(111)
-        ax.plot(ppm_roi, mag_roi, color="midnightblue")
-        ax.plot(ppm_roi, data[0][idx], color="orange")
-        ax.scatter(saddle_ppm, mag_roi[saddle_idx], color="red", s=10)
-        plt.axvline(x=saddle_ppm, ls="--", color="red", lw=1)
-        plt.xlabel("ppm", fontsize=11)
-        plt.ylabel("a.u", fontsize=11)
-        plt.title(plotname, fontsize=12)
-        ytick_range = list(ax.get_yticks())
+        # set up fig and gridspec for paired plots
+        fig = plt.figure(constrained_layout=True, figsize=(8,4))
+        gs = fig.add_gridspec(nrows=1, ncols=2)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+
+        # plot the 1D magnitude and absorptive spectra
+        ax1.plot(ppm_roi, mag_roi, color="midnightblue")
+        ax1.plot(ppm_roi, data[0][idx], color="orange")
+        # add the saddle point markers
+        ax1.scatter(saddle_ppm, mag_roi[saddle_idx], color="red", s=10)
+        ax1.axvline(x=saddle_ppm, ls="--", color="red", lw=1)
+        ax1.set_xlabel("ppm", fontsize=11)
+        ax1.set_ylabel("a.u", fontsize=11)
+        ax1.set_title("1D spectrum", fontsize=11)
+        ytick_range = list(ax1.get_yticks())
         xtext=np.round(saddle_ppm[0], decimals=3)
-        plt.text(x=xtext-np.abs(0.005*xtext), y=np.median(ytick_range), s=str(xtext), color="red") 
-        ax.legend({"magnitude":"midnightblue","absorptive":"orange"})
-        ax.invert_xaxis()
+        ax1.text(x=xtext-np.abs(0.005*xtext), y=np.median(ytick_range), s=str(xtext), color="red") 
+        ax1.legend({"magnitude":"midnightblue","absorptive":"orange"})
+        ax1.invert_xaxis()
+
+
+        # plot the polar representation
+        
+        # find the polar coordinates for saddle point
+        pidx = np.where(ppm == saddle_ppm)
+        ax2.plot(data[0], data[1], color="midnightblue"); 
+        ax2.scatter(data[0][pidx], data[1][pidx], color="red", s=20); 
+        # label axes
+        ax2.set_xlabel("Real (a.u.)", fontsize=11)
+        ax2.set_ylabel("Imaginary (a.u)", fontsize=11); 
+        ax2.set_title("Polar Plot", fontsize=11)
+        # set aspect to equal for square plot
+        plt.gca().set_aspect("equal")
+
+
+        fig.suptitle(plotname, fontsize=12)
         plt.savefig(plotname+".pdf")
         plt.savefig(plotname+".png", dpi=300)
         
