@@ -49,6 +49,7 @@ def find_saddle(params, data, ppm_region, plot=False, plotname="saddle-plot"):
     saddle_idx = argrelmin(mag_roi, order=20)[0]
     saddle_ppm = ppm_roi[saddle_idx]
 
+    
     # Plot the location of the saddle point on magnitude spectrum
     if plot==True:
         # set up fig and gridspec for paired plots
@@ -56,7 +57,7 @@ def find_saddle(params, data, ppm_region, plot=False, plotname="saddle-plot"):
         gs = fig.add_gridspec(nrows=1, ncols=2)
         ax1 = fig.add_subplot(gs[0, 0])
         ax2 = fig.add_subplot(gs[0, 1])
-
+        
         # plot the 1D magnitude and absorptive spectra
         ax1.plot(ppm_roi, mag_roi, color="midnightblue")
         ax1.plot(ppm_roi, data[0][idx], color="orange")

@@ -88,3 +88,56 @@ def magnitude_transformation(data):
     return magnitude
 
 
+def add_noise(data, snr):
+    """Function to add Gaussian noise to processed 1D NMR data.
+    
+    Parameters
+
+    ----------
+    
+    data: object
+        NMRGlue numpy array data obejct from nmrglue.bruker.read_pdata or dispatools.utils.load_pdata
+    snr: float
+        desired SNR value for adding noise
+
+    Returns
+    
+    -------
+    
+    dsp0_rn : numpy.array
+        Real dimension data with added Gaussian noise
+    dsp0_in : numpy.array
+        Imaginary dimension data with added Gaussian noise
+    rnoise : numpy.array
+        Noise for the real dimension
+    inoise : numpy.array
+        Noise for the imaginary dimension
+    """
+    
+    mag = magnitude_transformation(data)
+    maxi = np.max(np.abs(mag)) * np.sqrt(2) 
+    n = len(data[0])
+    s = maxi / snr / 2 / np.sqrt(n)
+
+    rnoise = np.random.normal(0, s, n)
+    inoise = np.random.normal(0, s, n)
+
+    # Check deviation of rnoise, inoise from ideal
+    rms_rnoise = np.sqrt(np.mean(rnoise**2))
+    rms_inoise = np.sqrt(np.mean(inoise**2))
+    
+    ract = rms_rnoise * np.sqrt(n);
+    iact = rms_inoise * np.sqrt(n);
+
+    # Scale noise accordingly
+    sr = (maxi / snr / 2) / ract;
+    si = (maxi / snr / 2) / iact;
+
+    rnoise = rnoise*sr
+    inoise = inoise*si
+    
+    dsp0_rn = data[0] + rnoise
+    dsp0_in = data[1] + inoise
+
+    return dsp0_rn, dsp0_in, rnoise, inoise
+
