@@ -115,7 +115,7 @@ def add_noise(data, snr):
     """
     
     mag = magnitude_transformation(data)
-    maxi = np.max(np.abs(mag)) * np.sqrt(2) 
+    maxi = np.max(np.abs(mag))
     n = len(data[0])
     s = maxi / snr / 2 / np.sqrt(n)
 

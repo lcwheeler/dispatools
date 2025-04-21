@@ -48,10 +48,15 @@ def find_saddle(params, data, ppm_region, plot=False, plotname="saddle-plot"):
     # Find the local minimum in the region
     saddle_idx = argrelmin(mag_roi, order=20)[0]
     saddle_ppm = ppm_roi[saddle_idx]
-
+    
+    # Get the saddle point intensity in R and I dimensions
+    pidx = np.where(ppm == saddle_ppm)
+    R_sp = data[0][pidx]
+    I_sp = data[1][pidx]
     
     # Plot the location of the saddle point on magnitude spectrum
     if plot==True:
+    
         # set up fig and gridspec for paired plots
         fig = plt.figure(constrained_layout=True, figsize=(8,4))
         gs = fig.add_gridspec(nrows=1, ncols=2)
@@ -77,9 +82,8 @@ def find_saddle(params, data, ppm_region, plot=False, plotname="saddle-plot"):
         # plot the polar representation
         
         # find the polar coordinates for saddle point
-        pidx = np.where(ppm == saddle_ppm)
         ax2.plot(data[0], data[1], color="midnightblue"); 
-        ax2.scatter(data[0][pidx], data[1][pidx], color="red", s=20); 
+        ax2.scatter(R_sp, I_sp, color="red", s=20); 
         # label axes
         ax2.set_xlabel("Real (a.u.)", fontsize=11)
         ax2.set_ylabel("Imaginary (a.u)", fontsize=11); 
@@ -92,7 +96,7 @@ def find_saddle(params, data, ppm_region, plot=False, plotname="saddle-plot"):
         plt.savefig(plotname+".pdf")
         plt.savefig(plotname+".png", dpi=300)
         
-    return saddle_ppm
+    return saddle_ppm, pidx, (R_sp, I_sp)
     
     
 def optimize_rotation_rms(data_path1, data_path2, ppm_region, step_deg=1, plot=True, plotname="RMS-Angles", origin=(0,0), angle_range=(-180,180), figsize=(8,4)):
