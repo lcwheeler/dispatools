@@ -114,30 +114,22 @@ def add_noise(data, snr):
         Noise for the imaginary dimension
     """
     
+    # transform to magnitude mode
     mag = magnitude_transformation(data)
-    maxi = np.max(np.abs(mag))
-    n = len(data[0])
-    s = maxi / snr / 2 / np.sqrt(n)
+    maxi = np.max(np.abs(mag)) 
+    
+    # set length of data/noise
+    n = len(mag)
+    
+    # find noise scale 
+    s = (maxi / snr) / 2 
 
+    # draw noise arrays from Gaussian distribution
     rnoise = np.random.normal(0, s, n)
     inoise = np.random.normal(0, s, n)
-
-    # Check deviation of rnoise, inoise from ideal
-    rms_rnoise = np.sqrt(np.mean(rnoise**2))
-    rms_inoise = np.sqrt(np.mean(inoise**2))
     
-    ract = rms_rnoise * np.sqrt(n);
-    iact = rms_inoise * np.sqrt(n);
-
-    # Scale noise accordingly
-    sr = (maxi / snr / 2) / ract;
-    si = (maxi / snr / 2) / iact;
-
-    rnoise = rnoise*sr
-    inoise = inoise*si
-    
+    # add noise to the real and imag. components
     dsp0_rn = data[0] + rnoise
     dsp0_in = data[1] + inoise
-
+    
     return dsp0_rn, dsp0_in, rnoise, inoise
-
