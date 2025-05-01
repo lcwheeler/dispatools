@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def fidgen(shift, width, n, dw=0.1): 
+def fidgen(shift, width, n, dw=0.001): 
     """Function to generate FID from specified shift, width using quadrature detection - i.e. real and imag
     are equal to amplitude multiplied by cos/sin(2pi*shift*t).
     
@@ -31,7 +31,6 @@ def fidgen(shift, width, n, dw=0.1):
         
     """
     
-    n = n + 1 #make sure the length is right
     t = np.arange(0, n*dw, dw)
     
     fidamp = np.exp(-t*np.pi*width) # FID amplitude
@@ -119,7 +118,11 @@ def specgen(fid, dw):
     spec[0:int(n/2)] = specpre[int(n/2):n]
     # positive frequencies
     #spec[int(n/2+1):n] = specpre[0:int(n/2)] 
-    spec[int(n/2):n] = specpre[0:int(n/2)] 
+    spec[int(n/2):n] = specpre[0:int(n/2)]
+    
+    #spec = np.zeros_like(specpre)
+    #spec[:len(spec)//2] = specpre[len(specpre)//2:]
+    #spec[len(spec)//2:] = specpre[:len(specpre)//2]
     
     # no spectrum flipping - do this in plotting
     spec = np.flip(spec)
@@ -213,7 +216,6 @@ def fidcomb(fid):
         fidc[2 * i] = fidr[i]
         fidc[2 * i + 1] = fidi[i]
 
-        
     return fidc
     
     
