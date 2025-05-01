@@ -72,8 +72,7 @@ def phaseshift(fid, dw, theta):
     # specify as 2nd arg whenever fid used
 
     # phase shifts the FID by theta degrees
-    i = np.sqrt(-1+0j)
-    fidps = fid*np.exp(-1*i*theta*np.pi/180)
+    fidps = fid*np.exp(-1j*theta*np.pi/180)
 
     return fidps
 
@@ -178,9 +177,7 @@ def addnoise(fid, dw, SNR):
     rnoise = rnoise * sr
     inoise = inoise * si
 
-    i = np.sqrt(-1+0j)
-
-    fid = fid + rnoise + 1*i*inoise
+    fid = fid + rnoise + 1j*inoise
 
     return fid
     
