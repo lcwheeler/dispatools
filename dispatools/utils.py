@@ -51,3 +51,6 @@ def parse_dataset(datapath):
         experiments[exp] = [dic,data]
 
     return experiments
+    
+    
+
