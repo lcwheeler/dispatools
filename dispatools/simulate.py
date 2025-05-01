@@ -111,18 +111,18 @@ def specgen(fid, dw):
     f = [-(1/dw)/2 - sp/2 + i * sp for i in range(n)]  # spectral frequency
         
     specpre = np.fft.fft(fid)
-    spec = np.zeros(n)
+    #spec = np.zeros(n)
     
     # negative frequencies
     #spec[0:int(n/2)] = specpre[int(n/2+1):n]
-    spec[0:int(n/2)] = specpre[int(n/2):n]
+    #spec[0:int(n/2)] = specpre[int(n/2):n]
     # positive frequencies
     #spec[int(n/2+1):n] = specpre[0:int(n/2)] 
-    spec[int(n/2):n] = specpre[0:int(n/2)]
+    #spec[int(n/2):n] = specpre[0:int(n/2)]
     
-    #spec = np.zeros_like(specpre)
-    #spec[:len(spec)//2] = specpre[len(specpre)//2:]
-    #spec[len(spec)//2:] = specpre[:len(specpre)//2]
+    spec = np.zeros_like(specpre)
+    spec[:len(spec)//2] = specpre[len(specpre)//2:]
+    spec[len(spec)//2:] = specpre[:len(specpre)//2]
     
     # no spectrum flipping - do this in plotting
     spec = np.flip(spec)
