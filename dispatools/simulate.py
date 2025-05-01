@@ -32,16 +32,15 @@ def fidgen(shift, width, n, dw=0.1):
     """
     
     n = n + 1 #make sure the length is right
-    t = np.arange(0, (n-1)*dw, dw)
+    t = np.arange(0, n*dw, dw)
     
     fidamp = np.exp(-t*np.pi*width) # FID amplitude
     #exp decay of 1 Hz gives 1/pi Hz FWHM, so scale appropriately
     
     #now get real, imag components
-    i = np.sqrt(-1+0j)
-    fidr = fidamp/2*np.cos(2*np.pi*shift*t) # carrier at 0 Hz, so shift - 0 = shift
-    fidi = fidamp/2*np.sin(2*np.pi*shift*t)
-    fid = fidr + 1*i*fidi
+    fidr = fidamp / 2 * np.cos(2 * np.pi * shift * t)  # carrier at 0 Hz, so shift - 0 = shift
+    fidi = fidamp / 2 * np.sin(2 * np.pi * shift * t)
+    fid = fidr + 1j*fidi
 
     return fid
     
