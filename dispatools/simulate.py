@@ -42,7 +42,7 @@ def fidgen(shift, width, n, dw=0.001):
     fid = fidr + 1j*fidi
 
     return fid
-    
+
 
 def phaseshift(fid, dw, theta):
     """Function to apply corrected phase shift to FID.
@@ -111,14 +111,6 @@ def specgen(fid, dw):
     f = [-(1/dw)/2 - sp/2 + i * sp for i in range(n)]  # spectral frequency
         
     specpre = np.fft.fft(fid)
-    #spec = np.zeros(n)
-    
-    # negative frequencies
-    #spec[0:int(n/2)] = specpre[int(n/2+1):n]
-    #spec[0:int(n/2)] = specpre[int(n/2):n]
-    # positive frequencies
-    #spec[int(n/2+1):n] = specpre[0:int(n/2)] 
-    #spec[int(n/2):n] = specpre[0:int(n/2)]
     
     spec = np.zeros_like(specpre)
     spec[:len(spec)//2] = specpre[len(specpre)//2:]
@@ -248,8 +240,9 @@ def write_fid_TS(fid, dw, bf, foldername):
     
     # write FID to folder
     os.mkdir(foldername)
-    #np.savetxt(foldername + '/fid', fidc)
-    fidc.astype('int').tofile(foldername + '/fid')
+    #fidc.astype('int').tofile(foldername + '/fid')
+    fidc.astype(np.int64).tofile(foldername + '/fid')
+    #fidc.tofile(foldername + '/fid')
     
     # write default acqu/acqus files
     dw_TS = dw/2 * 10**6 # dw in TopSpin is actually half the "true" dwell time
